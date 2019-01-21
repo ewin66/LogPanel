@@ -40,7 +40,6 @@ namespace LogDashboard
             {
                 var Engine = httpContext.RequestServices.GetService<IRazorLightEngine>();
                 var Route = LogDashboardRoutes.Routes.FindRoute("/Dashboard/Tip");
-
                 var vhtml = await Engine.CompileRenderAsync(Route.View, null, null);
                 await httpContext.Response.WriteAsync(vhtml);
                 return;
