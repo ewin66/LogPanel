@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using LogDashboard.Route;
 
 namespace LogDashboard.Route
 {
@@ -27,7 +28,7 @@ namespace LogDashboard.Route
                     throw new ArgumentNullException("route view can not be null");
                 }
             }
-
+           
 
             if (string.IsNullOrWhiteSpace(route.Handle) || string.IsNullOrWhiteSpace(route.Action))
             {
@@ -43,7 +44,10 @@ namespace LogDashboard.Route
                     {
                         throw new ArgumentException("route key fotmat handle/action", ex);
                     }
+                   
                 }
+
+
             }
 
             if (Routes.Exists(x => x.Key == route.Key))
@@ -63,7 +67,7 @@ namespace LogDashboard.Route
             {
                 return Routes.FirstOrDefault(x => x.Key.ToLower() == "/Dashboard/Home".ToLower());
             }
-
+            
             return Routes.FirstOrDefault(x => x.Key.ToLower() == url.ToLower());
         }
 

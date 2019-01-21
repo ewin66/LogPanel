@@ -1,7 +1,9 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Dynamic;
+using System.Reflection;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using LogDashboard.Models;
 
 namespace LogDashboard.Handle
 {
@@ -23,6 +25,7 @@ namespace LogDashboard.Handle
         public virtual async Task<string> View(object model = null, string viewName = null)
         {
             ViewBag.CustomPropertyInfos = Context.Options.CustomPropertyInfos;
+            ViewBag.LogModelType = Context.Options.LogModelType;
             Context.HttpContext.Response.ContentType = "text/html";
             ViewBag.DashboardMapPath = Context.Options.PathMatch;
             ViewBag.View = Context.Route.View;

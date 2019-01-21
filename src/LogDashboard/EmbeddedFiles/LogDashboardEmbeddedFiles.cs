@@ -28,19 +28,9 @@ namespace LogDashboard.EmbeddedFiles
                 return Task.CompletedTask;
             });
 
-            // 获取当前类库的程序集
-            Assembly assembly = Assembly.GetExecutingAssembly();
-
-            // 从程序集中读取插件的菜单和工具栏配置信息(xml文件内容)
-            Stream stream0 = assembly.GetManifestResourceStream($"{LogDashboardConsts.Root}.{path.Substring(1)}");
-            var reader0 = new StreamReader(stream0);
-            var result0 = reader0.ReadToEnd();
-            return result0;
-
-            //var stream = Assembly.GetAssembly(typeof(LogDashboardRoute)).GetManifestResourceStream($"{LogDashboardConsts.Root}.{path.Substring(1)}");
-            //var reader = new StreamReader(stream);
-            //var result= reader.ReadToEnd();
-            //return result;
+            var stream = Assembly.GetAssembly(typeof(LogDashboardRoute)).GetManifestResourceStream($"{LogDashboardConsts.Root}.{path.Substring(1)}");
+            var reader = new StreamReader(stream);
+            return reader.ReadToEnd();
         }
 
     }

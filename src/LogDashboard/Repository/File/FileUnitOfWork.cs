@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using LogDashboard.Extensions;
 using LogDashboard.Models;
@@ -10,11 +11,13 @@ namespace LogDashboard.Repository.File
     public class FileUnitOfWork<T> : IUnitOfWork where T : ILogModel, new()
     {
         private List<T> _logs;
+
         private readonly LogDashboardOptions _options;
+
         /// <summary>
-        /// 日志模板不完整标识
+        /// 日志模板完整标识
         /// </summary>
-        private bool LogModelNotCompletion = false;
+        public bool LogModelCompletion = true;
 
         public FileUnitOfWork(LogDashboardOptions options)
         {
@@ -42,18 +45,21 @@ namespace LogDashboard.Repository.File
         {
             int id = 1;
             var rootPath = _options.RootPath ?? AppContext.BaseDirectory;
+
             if (!Directory.Exists(rootPath))
             {
-                _logs.Add(CreateWarnItem(id, "LogDashborad Warn:找不到日志目录，请检查配置。"));
+                _logs.Add(CreateWarnItem(id, $"{LogDashboardConsts.Root} Warn:日志文件目录不存在,请检查 LogDashboardOption.RootPath 配置!"));
                 return;
             }
             var paths = Directory.GetFiles(rootPath, "*.log", SearchOption.AllDirectories);
 
-            foreach (var path in paths)
+            var logFiles = paths.Select(x => new { Path = x, LastWriteTime = System.IO.File.GetLastWriteTime(x) }).OrderBy(x => x.LastWriteTime).ToList();
+
+            foreach (var logFile in logFiles)
             {
                 var stringBuilder = new StringBuilder();
 
-                using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using (var fileStream = new FileStream(logFile.Path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 using (var streamReader = new StreamReader(fileStream, Encoding.Default))
                 {
                     while (!streamReader.EndOfStream)
@@ -63,31 +69,34 @@ namespace LogDashboard.Repository.File
                 }
 
                 var text = stringBuilder.ToString();
-                var logLines = text.Trim().Split(new[] { _options.FileEndDelimiter }, StringSplitOptions.None);
+                var logLines = text.Trim().Split(new[] { _options.FileEndDelimiter }, StringSplitOptions.None).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
 
                 foreach (var logLine in logLines)
                 {
                     var line = logLine.Split(new[] { _options.FileFieldDelimiter }, StringSplitOptions.None);
                     if (line.Length > 1)
                     {
-                        T item = new T
+                        var item = new T
                         {
                             Id = id,
-                            LongDate = DateTime.Parse(line.TryGetValue(0).ToUpper()),
-                            Level = line.TryGetValue(1).ToUpper(),
+                            LongDate = DateTime.Parse(line.TryGetValue(0)),
+                            Level = line.TryGetValue(1)?.ToUpper(),
                             Logger = line.TryGetValue(2),
                             Message = line.TryGetValue(3),
-                            Exception = line.TryGetValue(4).Trim()
+                            Exception = line.TryGetValue(4)
                         };
-                        //避免日志项不只6个，但是未配置自定义字段造成索引超出界限的异常,并标记日志模型配置不完整
-                        for (var i = 5; i < line.Length; i++)
+
+
+                        var lineEnd = Math.Min(_options.CustomPropertyInfos.Count, line.Length - 5);
+                        if (line.Length - 5 != _options.CustomPropertyInfos.Count && logFile == logFiles.Last() && logLine == logLines.Last())
                         {
-                            if (i - 5 >= _options.CustomPropertyInfos.Count)
-                            {
-                                LogModelNotCompletion = true;
-                                break;
-                            }
-                            _options.CustomPropertyInfos[i - 5].SetValue(item, line.TryGetValue(i));
+                            //last files and last line
+                            LogModelCompletion = false;
+                        }
+
+                        for (var i = 0; i < lineEnd; i++)
+                        {
+                            _options.CustomPropertyInfos[i].SetValue(item, line.TryGetValue(i + 5));
                         }
 
                         _logs.Add(item);
@@ -97,10 +106,9 @@ namespace LogDashboard.Repository.File
                 }
             }
 
-            if (LogModelNotCompletion)
+            if (!LogModelCompletion)
             {
-                _logs.Add(CreateWarnItem(id, "LogDashborad Warn:自定义日志模型配置不完整。"));
-                LogModelNotCompletion = false;
+                _logs.Add(CreateWarnItem(id, $"{LogDashboardConsts.Root} Warn:自定义日志模型与Config不完全匹配,请检查代码!"));
             }
 
         }
@@ -110,7 +118,7 @@ namespace LogDashboard.Repository.File
             return new T
             {
                 Id = id,
-                Logger = "LogDashboard",
+                Logger = LogDashboardConsts.Root,
                 LongDate = DateTime.Now,
                 Level = "WARN",
                 Message = message

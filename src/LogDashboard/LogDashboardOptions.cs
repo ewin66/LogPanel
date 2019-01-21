@@ -37,7 +37,6 @@ namespace LogDashboard
         /// </summary>
         public string FileFieldDelimiter { get; set; }
 
-
         /// <summary>
         /// file log end Delimiter
         /// </summary>
@@ -89,6 +88,7 @@ namespace LogDashboard
         {
             LogTableName = tableName;
             DatabaseSource = true;
+            FileSource = false;
             ConnectionString = connectionString;
         }
 

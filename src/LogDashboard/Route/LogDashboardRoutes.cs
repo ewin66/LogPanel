@@ -18,7 +18,6 @@
 
             Routes.AddRoute(new LogDashboardRoute("/Dashboard/LogInfo", "Views.Dashboard.LogInfo.cshtml"));
 
-
             Routes.AddRoute(new LogDashboardRoute("/Dashboard/Tip", "Views.Dashboard.ApolloTip.cshtml"));
 
             Routes.AddRoute(new LogDashboardRoute
@@ -27,8 +26,17 @@
                 HtmlView = false
             });
 
-            Routes.AddRoute(new LogDashboardRoute("/Dashboard/Ha", "Views.Dashboard.Exception.cshtml"));
+            Routes.AddRoute(new LogDashboardRoute
+            {
+                Key = "/Dashboard/RequestTrace",
+                HtmlView = false
+            });
 
+            Routes.AddRoute(new LogDashboardRoute
+            {
+                Key = "/Dashboard/GetLogChart",
+                HtmlView = false
+            });
         }
     }
 }

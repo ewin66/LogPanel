@@ -1,20 +1,20 @@
-﻿using LogDashboard.Authorization;
-using LogDashboard.EmbeddedFiles;
-using LogDashboard.Handle;
-using LogDashboard.Repository;
-using LogDashboard.Route;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
-using RazorLight;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+using LogDashboard.Authorization;
+using LogDashboard.EmbeddedFiles;
+using LogDashboard.Handle;
+using LogDashboard.Repository;
+using LogDashboard.Route;
+using RazorLight;
+using Microsoft.Extensions.Configuration;
 
 namespace LogDashboard
 {
@@ -32,6 +32,8 @@ namespace LogDashboard
         public async Task InvokeAsync(HttpContext httpContext)
         {
             var opts = httpContext.RequestServices.GetService<LogDashboardOptions>();
+
+            var requestUrl = httpContext.Request.Path.Value;
             var configs = httpContext.RequestServices.GetService<IConfiguration>();
             var log = configs["LogDashboard"];
             if (log != "open")
@@ -47,8 +49,6 @@ namespace LogDashboard
                 //await httpContext.Response.WriteAsync("日志面板被锁定<br>请联系华瑞技术中心: 0571-83786666 <br>提示：在配置中心设置 LogDashboard=open </div>");
 
             }
-
-            var requestUrl = httpContext.Request.Path.Value;
 
             //EmbeddedFile
             if (requestUrl.Contains("css") || requestUrl.Contains("js"))

@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using System;
+using LogDashboard;
 
 namespace LogDashboard
 {
@@ -10,8 +11,6 @@ namespace LogDashboard
             this IApplicationBuilder builder, string pathMatch = "/LogDashboard")
         {
             var options = builder.ApplicationServices.GetService<LogDashboardOptions>();
-
-            options.PathMatch = pathMatch;
 
             if (options == null)
             {
