@@ -1,22 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using UseAuthorization.Models;
 
 namespace UseAuthorization.Controllers
 {
     public class HomeController : Controller
     {
+        readonly IConfiguration _conf;
+        public HomeController(IConfiguration conf)
+        {
+            _conf = conf;
+        }
+
         public IActionResult Index()
         {
+            _conf["LogDashboard"] = "lock";
             return View();
         }
 
         public IActionResult Privacy()
         {
+            _conf["LogDashboard"] = "open";
             return View();
         }
 

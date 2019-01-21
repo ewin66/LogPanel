@@ -1,8 +1,6 @@
-﻿using System;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using LogDashboard;
-using LogDashboard.Extensions;
+using System;
 
 namespace LogDashboard
 {

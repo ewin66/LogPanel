@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using DapperExtensions;
 using LogDashboard.Extensions;
-using LogDashboard.Model;
+using LogDashboard.Models;
 using LogDashboard.Repository;
 
 namespace LogDashboard.Handle

@@ -4,6 +4,7 @@ using LogDashboard.Handle;
 using LogDashboard.Repository;
 using LogDashboard.Route;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using RazorLight;
@@ -31,6 +32,21 @@ namespace LogDashboard
         public async Task InvokeAsync(HttpContext httpContext)
         {
             var opts = httpContext.RequestServices.GetService<LogDashboardOptions>();
+            var configs = httpContext.RequestServices.GetService<IConfiguration>();
+            var log = configs["LogDashboard"];
+            if (log != "open")
+            {
+                var Engine = httpContext.RequestServices.GetService<IRazorLightEngine>();
+                var Route = LogDashboardRoutes.Routes.FindRoute("/Dashboard/Tip");
+
+                var vhtml = await Engine.CompileRenderAsync(Route.View, null, null);
+                await httpContext.Response.WriteAsync(vhtml);
+                return;
+                //httpContext.Response.ContentType = "text/html; charset=utf-8";
+                //await httpContext.Response.WriteAsync("<div style='margin:10px auto;padding:20px; width:600px; height:300px; border:1px solid #ccc;background:yellow;line-height:50px;size:font-size:40px;'>");
+                //await httpContext.Response.WriteAsync("日志面板被锁定<br>请联系华瑞技术中心: 0571-83786666 <br>提示：在配置中心设置 LogDashboard=open </div>");
+
+            }
 
             var requestUrl = httpContext.Request.Path.Value;
 

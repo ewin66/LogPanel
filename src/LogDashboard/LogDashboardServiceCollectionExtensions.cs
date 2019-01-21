@@ -5,7 +5,7 @@ using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using LogDashboard.Handle;
 using LogDashboard.LogDashboardBuilder;
-using LogDashboard.Model;
+using LogDashboard.Models;
 using LogDashboard.Repository;
 using LogDashboard.Repository.Dapper;
 using LogDashboard.Repository.File;

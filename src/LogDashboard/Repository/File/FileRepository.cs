@@ -1,11 +1,8 @@
-﻿using LogDashboard.Model;
+﻿using DapperExtensions;
+using LogDashboard.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using DapperExtensions;
-using LogDashboard.Extensions;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 

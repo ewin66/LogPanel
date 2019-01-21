@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using LogDashboard.Authorization;
 using Microsoft.AspNetCore.Authorization;
-using LogDashboard.Model;
+using LogDashboard.Models;
 
 namespace LogDashboard
 {

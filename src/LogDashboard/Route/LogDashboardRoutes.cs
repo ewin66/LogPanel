@@ -18,6 +18,9 @@
 
             Routes.AddRoute(new LogDashboardRoute("/Dashboard/LogInfo", "Views.Dashboard.LogInfo.cshtml"));
 
+
+            Routes.AddRoute(new LogDashboardRoute("/Dashboard/Tip", "Views.Dashboard.ApolloTip.cshtml"));
+
             Routes.AddRoute(new LogDashboardRoute
             {
                 Key = "/Dashboard/GetException",
@@ -25,7 +28,7 @@
             });
 
             Routes.AddRoute(new LogDashboardRoute("/Dashboard/Ha", "Views.Dashboard.Exception.cshtml"));
-           
+
         }
     }
 }

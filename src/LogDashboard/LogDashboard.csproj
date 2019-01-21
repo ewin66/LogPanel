@@ -3,14 +3,21 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>liangshiwei</Authors>
-    <Description>日志面板、LogDashboard、AspNetCore</Description>
-    <PackageProjectUrl>https://github.com/liangshiw/LogDashboard</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/liangshiw/LogDashboard/master/logo.png</PackageIconUrl>
-    <RepositoryUrl>https://github.com/liangshiw/LogDashboard</RepositoryUrl>
+    <Authors>sanglirong</Authors>
+    <Description>日志面板、LogPanel、AspNetCore</Description>
+    <PackageProjectUrl>https://github.com/sanglirong/LogPanel</PackageProjectUrl>
+    <PackageIconUrl>http://hrrtx.huaruiinfo.com/logo.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/sanglirong/LogPanel</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
-    <Version>1.0.4.2</Version>
-    <Company>liangshiwei</Company>
+    <Version>1.0.0.0</Version>
+    <Company>华瑞资讯</Company>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <PackageReleaseNotes>添加了一个 根据IConfiguration  是否 开放 查看  日志面板的 开关。</PackageReleaseNotes>
+    <Product>Hr.LogPanel</Product>
+    <PackageId>Hr.LogPanel</PackageId>
+    <RootNamespace>LogDashboard</RootNamespace>
+    <AssemblyName>LogDashboard</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
